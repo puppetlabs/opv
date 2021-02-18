@@ -23,6 +23,12 @@ _[This README is partially aspirational. Not everything described in here is or 
 This module provides resources to verify the operational status of the things you're managing.
 This can be basic things like "is this port reachable" to in-depth checks like "does this service return a healthy status".
 
+Further reading:
+
+* Early musing on this functionality: [Hitchhiker’s guide to testing infrastructure as/and code — don’t panic!](https://puppet.com/blog/hitchhikers-guide-to-testing-infrastructure-as-and-code/)
+
+* Some background on the meaning of V&V: [The difference between Verification and Validation](https://www.easterbrook.ca/steve/2010/11/the-difference-between-verification-and-validation/)
+
 ## Setup
 
 ### Beginning with opv
