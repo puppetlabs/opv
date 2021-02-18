@@ -9,9 +9,9 @@ class Puppet::Provider::CheckHttp::CheckHttp
   end
 
   def set(context, changes)
-    changes.each do |name, change|
-        uri = URI(name)
-        context.processing(uri.to_s, {}, {}, message: 'checking http') do
+    changes.each do |name, _change|
+      uri = URI(name)
+      context.processing(uri.to_s, {}, {}, message: 'checking http') do
         res = Net::HTTP.get(uri)
       end
     end
