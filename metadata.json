@@ -4,7 +4,7 @@
   "author": "David Schmitt <david.schmitt@puppet.com>",
   "summary": "Operational Verification and Validation Resources",
   "license": "Apache-2.0",
-  "source": "https://github.com/puppetlabs/puppetlabs-opv",
+  "source": "https://github.com/puppetlabs/opv",
   "dependencies": [
 
   ],
