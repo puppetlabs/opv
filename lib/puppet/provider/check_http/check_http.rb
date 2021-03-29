@@ -12,7 +12,9 @@ class Puppet::Provider::CheckHttp::CheckHttp
     changes.each do |name, _change|
       uri = URI(name)
       context.processing(uri.to_s, {}, {}, message: 'checking http') do
-        res = Net::HTTP.get(uri)
+        if Net::HTTP.get(uri)
+          context.info("successfully connected to #{name}")
+        end
       end
     end
   end
