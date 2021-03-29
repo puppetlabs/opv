@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-ensure_module_defined('Puppet::Provider::TcpPortReachable')
-require 'puppet/provider/tcp_port_reachable/tcp_port_reachable'
+ensure_module_defined('Puppet::Provider::CheckTcpPort')
+require 'puppet/provider/check_tcp_port/check_tcp_port'
 
-RSpec.describe Puppet::Provider::TcpPortReachable::TcpPortReachable do
+RSpec.describe Puppet::Provider::CheckTcpPort::CheckTcpPort do
   subject(:provider) { described_class.new }
 
   let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }

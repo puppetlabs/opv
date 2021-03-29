@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-# Implementation for the tcp_port_reachable type using the Resource API.
-class Puppet::Provider::TcpPortReachable::TcpPortReachable
+require 'puppet/resource_api/simple_provider'
+
+# Implementation for the check_tcp_port type using the Resource API.
+class Puppet::Provider::CheckTcpPort::CheckTcpPort
   def get(_context)
     []
   end
