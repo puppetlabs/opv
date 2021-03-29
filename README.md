@@ -34,13 +34,13 @@ Further reading:
 ### Beginning with opv
 
 The resources in this module work stand-alone and straight out of the box.
-If anything has special needs, it will be described in the resource's reference section.
+If anything has special needs, it will be described in the resource's [reference section](./REFERENCE.md).
 
 ## Usage
 
 ```puppet
 # Check whether SSH on localhost is reachable
-tcp_port_reachable { '127.0.0.1:22': }
+check_tcp_port { '127.0.0.1:22': }
 ```
 
 ```puppet
@@ -49,6 +49,56 @@ check_http {
   'https://www.example.com':
     tries => 3,
     timeout => 10,
+}
+```
+
+```puppet
+# Check the exit code of a command
+check_command {
+  "custom health check":
+    command => ['/usr/local/bin/healthy', $app_root],
+    acceptable_exit_codes => [17, 42],
+    tries => 3,
+    timeout => 10,
+}
+```
+
+```puppet
+# Check the status of a windows service
+check_windows_service {
+  "WinRM":
+    timeout => 10,
+}
+```
+
+```puppet
+# Check the status of a systemd service
+check_systemd {
+  "docker.service":
+    timeout => 10,
+}
+```
+
+```puppet
+# Check the status of a systemd service
+check_systemd {
+  "openvpn.service":
+    expected_status => 'stopped',
+}
+```
+
+```puppet
+# Check the result of a bolt task (e.g. as part of a plan run)
+opv::check_task('service', $targets, 'name' => 'docker') |result| {
+  return result['status'] == 'running'
+}
+```
+
+```puppet
+# Check a local certificate file
+check_certificate {
+  "/opt/puppetlabs/puppet/ssl/cert.pem":
+    allowed_remaining_validity_days => 10;
 }
 ```
 
