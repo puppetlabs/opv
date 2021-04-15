@@ -6,6 +6,8 @@
 # See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
 # for the default values.
 ---
+spec/spec_helper.rb:
+  mock_with: ':rspec'
 .gitlab-ci.yml:
   unmanaged: true
 .travis.yml:
@@ -14,3 +16,7 @@ appveyor.yml:
   unmanaged: true
 data/common.yaml:
   unmanaged: true
+.github/workflows/auto_release.yml:
+  unmanaged: false
+.github/workflows/release.yml:
+  unmanaged: false
