@@ -8,7 +8,7 @@
 
 * Integrate system monitoring into your puppet reporting pipeline
 
-_[This README is partially aspirational. Not everything described in here is or will be implemented. Please direct any feedback to the [IAC Team](https://puppetlabs.github.io/iac/team/2021/01/20/reaching-out.html)]_
+_[This README is partially aspirational. Not everything described in here is or will be implemented. Please direct any feedback to the [Discussions tab](https://github.com/puppetlabs/opv/discussions)]_
 
 ## Table of Contents
 
