@@ -22,6 +22,8 @@ _[This README is partially aspirational. Not everything described in here is or 
 
 This module provides resources to verify the operational status of the things you're managing.
 This can be basic things like "is this port reachable" to in-depth checks like "does this service return a healthy status".
+Check out the "Operational Verification" talk at the [Become a better Puppet developer](https://puppet.com/events/become-a-better-puppet-developer/) Puppet Camp;
+[Slides](https://docs.google.com/presentation/d/1xV7PzfbNaCgM_I-ClR9a4DEA2CIKZP6FE8bUkP9fPUs/edit?usp=sharing).
 
 Further reading:
 
@@ -47,7 +49,7 @@ check_tcp_port { '127.0.0.1:22': }
 # Check whether HTTP requests to 'https://www.example.com' work within three tries and a timeout of 10 seconds
 check_http {
   'https://www.example.com':
-    tries => 3,
+    retries => 3,
     timeout => 10,
 }
 ```
@@ -58,7 +60,7 @@ check_command {
   "custom health check":
     command => ['/usr/local/bin/healthy', $app_root],
     acceptable_exit_codes => [17, 42],
-    tries => 3,
+    retries => 3,
     timeout => 10,
 }
 ```
@@ -104,8 +106,8 @@ check_certificate {
 
 ## Development
 
+See the [current enhancements](https://github.com/puppetlabs/opv/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) for immediate next plans.
+
 PRs for new checks, new check params, and other improvements are always appreciated.
 
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+Post and discuss feedback in [Discussions](https://github.com/puppetlabs/opv/discussions).
