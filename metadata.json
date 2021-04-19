@@ -5,6 +5,8 @@
   "summary": "Operational Verification and Validation Resources",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/opv",
+  "project_page": "https://github.com/puppetlabs/opv",
+  "issues_url": "https://github.com/puppetlabs/opv/issues",
   "dependencies": [
 
   ],

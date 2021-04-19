@@ -6,6 +6,11 @@
 # See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
 # for the default values.
 ---
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'puppet-resource_api'
+      - gem: 'github_changelog_generator'
 spec/spec_helper.rb:
   mock_with: ':rspec'
 .gitlab-ci.yml:
