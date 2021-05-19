@@ -33,7 +33,7 @@ EOS
       type: 'Array[Integer]',
       desc: 'An array of acceptable HTTP status codes. If a request returns one of these status codes, it is considered a success',
       behaviour: :parameter,
-      default: 200,
+      default: [200],
     },
     body_matcher: {
       type: 'Regexp',
