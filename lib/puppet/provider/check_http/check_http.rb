@@ -36,9 +36,9 @@ class Puppet::Provider::CheckHttp::CheckHttp
 
         # Success being defined as having one of the expected_statuses and the body of the response matches body_matcher
         if (should_hash[:expected_statuses].include? response.code.to_i)
-          context.info("The return  response #{response.code} is matching with the expected_statuses #{should_hash[:expected_statuses]}")
+          context.info("The return response #{response.code} is matching with the expected_statuses #{should_hash[:expected_statuses]}")
           if (response.body.match(should_hash[:body_matcher]))
-            context.info("The return response body #{response.body} is matching with body_matcher #{should_hash[:body_matcher]}")
+            context.info("The return response body '#{response.body[..99]}` is matching with body_matcher '#{should_hash[:body_matcher]}'")
           else
             raise Puppet::Error, "check_http response body check failed. The return response body #{response.body} is not matching body_matcher #{should_hash[:body_matcher]}"
             return false
