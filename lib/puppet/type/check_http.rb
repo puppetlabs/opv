@@ -13,11 +13,6 @@ Use this to check whether a web server is responding correctly. This can be used
 EOS
   features: ['custom_insync'],
   attributes: {
-    ensure: {
-      type: 'Enum[present, absent]',
-      desc: 'Set to `absent` to temporarily disable a check.',
-      default: 'present',
-    },
     url: {
       type: 'String',
       desc: 'The URL to test.',
