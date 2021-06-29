@@ -21,8 +21,6 @@ class Puppet::Provider::CheckHttp::CheckHttp
     context.debug("Checking whether #{attribute_name} is up-to-date")
     uri = URI.parse(should_hash[:url])
 
-    # Update the check_http provider to wait for backoff ** (exponential_backoff_base * (retries - 1) seconds between attempts (up to max_backoff)
-    base_interval = should_hash[:backoff]**(should_hash[:exponential_backoff_base] * should_hash[:retries] - 1)
 
     # This callback provides the exception that was raised in the current try, the try_number, the elapsed_time for all tries so far, and the time in seconds of the next_interval.
     do_this_on_each_retry = proc do |exception, try, elapsed_time, next_interval|
@@ -42,16 +40,14 @@ multiplier: should_hash[:exponential_backoff_base], on_retry: do_this_on_each_re
       # Success being defined as having one of the expected_statuses and the body of the response matches body_matcher
       unless response.nil?
         unless should_hash[:expected_statuses].include? response.code.to_i
-          raise Puppet::Error,
-"check_http response code check failed. The return response '#{response.code}' is not matching with the expected_statuses '#{should_hash[:expected_statuses]}.to_s'"
+          raise Puppet::Error, "check_http response code check failed. The return response '#{response.code}' is not matching with the expected_statuses '#{should_hash[:expected_statuses]}.to_s'"
         end
-        context.info("The return response '#{response.code}' is matching with the expected_statuses '#{should_hash[:expected_statuses]}'")
+        context.debug("The return response '#{response.code}' is matching with the expected_statuses '#{should_hash[:expected_statuses]}'")
         unless response.body.match(should_hash[:body_matcher])
-          raise Puppet::Error,
-"check_http response body check failed. The return response body '#{response.body[0..99]}' is not matching body_matcher '#{should_hash[:body_matcher]}.to_s'"
+          raise Puppet::Error, "check_http response body check failed. The return response body '#{response.body[0..99]}' is not matching body_matcher '#{should_hash[:body_matcher].to_s}'"
         end
-        context.info("The return response body '#{response.body[0..99]}' is matching with body_matcher '#{should_hash[:body_matcher]}.to_s'")
-        context.info("Successfully connected to '#{name}'")
+        context.debug("The return response body '#{response.body[0..99]}' is matching with body_matcher '#{should_hash[:body_matcher].to_s}'")
+        context.debug("Successfully connected to '#{name}'")
         return true
       end
     end
