@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'pry'
 require 'webmock/rspec'
 
 ensure_module_defined('Puppet::Provider::CheckHttp')
@@ -34,10 +33,9 @@ RSpec.describe Puppet::Provider::CheckHttp::CheckHttp do
         'User-Agent'=>'Ruby'
         }).to_return(status: 200, body: "Google", headers: {})
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
-      expect(context).to receive(:info).with("The base_interval is '0' and retrying for '1' time")
-      expect(context).to receive(:info).with("The return response '200' is matching with the expected_statuses '[200]'")
-      expect(context).to receive(:info).with("The return response body 'Google' is matching with body_matcher '(?-mix:Google).to_s'")
-      expect(context).to receive(:info).with("Successfully connected to 'foo'")
+      expect(context).to receive(:debug).with("The return response '200' is matching with the expected_statuses '[200]'")
+      expect(context).to receive(:debug).with("The return response body 'Google' is matching with body_matcher '(?-mix:Google)'")
+      expect(context).to receive(:debug).with("Successfully connected to 'foo'")
       expect(provider.insync?(context, 'foo', 'foo', valid_hash, valid_hash)).to be(true)
     end
   end
@@ -52,10 +50,9 @@ RSpec.describe Puppet::Provider::CheckHttp::CheckHttp do
        	  'Host'=>'abc.test.net',
        	  'User-Agent'=>'Ruby'
            }).to_return(status: 500, body: "invalidbody", headers: {})
-      allow(context).to receive(:info)
+      allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
-      expect(context).to receive(:info).with("The base_interval is '0' and retrying for '1' time")
       expect { provider.insync?(context, 'foo', 'foo', invalid_hash, invalid_hash) }.to raise_error(/check_http response code check failed./)
     end
   end
@@ -70,18 +67,17 @@ RSpec.describe Puppet::Provider::CheckHttp::CheckHttp do
        	  'Host'=>'abc.test.net',
        	  'User-Agent'=>'Ruby'
            }).to_return(status: 200, body: "invalidbody", headers: {})
-      allow(context).to receive(:info)
+      allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
-      expect(context).to receive(:info).with("The base_interval is '0' and retrying for '1' time")
-      expect(context).to receive(:info).with("The return response '200' is matching with the expected_statuses '[200]'")
+      expect(context).to receive(:debug).with("The return response '200' is matching with the expected_statuses '[200]'")
       expect { provider.insync?(context, 'foo', 'foo', invalid_hash, invalid_hash) }.to raise_error(/check_http response body check failed./)
     end
   end
 
   describe 'insync?(context, name, attribute_name, is_hash, should_hash) with Retry' do
     it 'processes resources' do
-      allow(context).to receive(:info)
+      allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
       stub_request(:get, invalid_uri).
@@ -92,9 +88,10 @@ RSpec.describe Puppet::Provider::CheckHttp::CheckHttp do
        	  'Host'=>'abc.test.net',
        	  'User-Agent'=>'Ruby'
            }).to_raise(StandardError)
-      expect(context).to receive(:info).with("The base_interval is '0' and retrying for '1' time")
-      expect(context).to receive(:info).with("The base_interval is '1' and retrying for '2' time")
-      expect(context).to receive(:info).with("The base_interval is '2' and retrying for '3' time")
+      expect(context).to receive(:info).with(/StandardError: 'Exception from WebMock' - 1 tries/)
+      expect(context).to receive(:info).with(/StandardError: 'Exception from WebMock' - 2 tries/)
+      expect(context).to receive(:info).with(/StandardError: 'Exception from WebMock' - 3 tries/)
+
       expect { provider.insync?(context, 'foo', 'foo', invalid_hash, invalid_hash) }.to raise_error(StandardError)
     end
   end
