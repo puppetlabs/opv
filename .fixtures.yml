@@ -4,4 +4,4 @@ fixtures:
     provision: 'https://github.com/puppetlabs/provision.git'
     puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
   symlinks:
-    motd: "#{source_dir}"
+    opv: "#{source_dir}"
