@@ -10,9 +10,12 @@ Gemfile:
   optional:
     ':development':
       - gem: 'puppet-resource_api'
-        git: 'https://github.com/michaeltlombardi/puppet-resource_api'
-        branch: 'gh-225/main/custom-insync'
       - gem: 'github_changelog_generator'
+      - gem: 'ruby-pwsh'
+      - gem: 'webmock'
+      - gem: 'pry-byebug'
+      - gem: 'retriable'
+        version: '~> 3.1'
 spec/spec_helper.rb:
   mock_with: ':rspec'
 .gitlab-ci.yml:
@@ -26,4 +29,11 @@ data/common.yaml:
 .github/workflows/auto_release.yml:
   unmanaged: false
 .github/workflows/release.yml:
+  unmanaged: false
+.github/workflows/spec.yml:
+  checks: 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+  unmanaged: false
+.github/workflows/nightly.yml:
+  unmanaged: false
+.github/workflows/pr_test.yml:
   unmanaged: false

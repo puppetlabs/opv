@@ -35,9 +35,9 @@ multiplier: should_hash[:exponential_backoff_base], on_retry: do_this_on_each_re
       end
       context.debug("The return response '#{response.code}' is matching with the expected_statuses '#{should_hash[:expected_statuses]}'")
       unless response.body.match(should_hash[:body_matcher])
-        raise Puppet::Error, "check_http response body check failed. The return response body '#{response.body[0..99]}' is not matching body_matcher '#{should_hash[:body_matcher].to_s}'"
+        raise Puppet::Error, "check_http response body check failed. The return response body '#{response.body[0..99]}' is not matching body_matcher '#{should_hash[:body_matcher]}'"
       end
-      context.debug("The return response body '#{response.body[0..99]}' is matching with body_matcher '#{should_hash[:body_matcher].to_s}'")
+      context.debug("The return response body '#{response.body[0..99]}' is matching with body_matcher '#{should_hash[:body_matcher]}'")
       context.debug("Successfully connected to '#{name}'")
       return true
     end
