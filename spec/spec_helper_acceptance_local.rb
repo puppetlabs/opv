@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 class LitmusHelper
   include Singleton
   include PuppetLitmus

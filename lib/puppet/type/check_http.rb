@@ -34,7 +34,7 @@ EOS
       type: 'Regexp',
       desc: 'A request is considered a success if the body of the HTTP response matches this regular expression',
       behaviour: :parameter,
-      default: //,
+      default: %r{},
     },
     request_timeout: {
       type: 'Numeric',
