@@ -28,7 +28,7 @@ EOS
       type: 'Regexp',
       desc: 'A call is considered a success if its output matches this regular expression',
       behaviour: :parameter,
-      default: //,
+      default: %r{},
     },
     execution_timeout: {
       type: 'Numeric',

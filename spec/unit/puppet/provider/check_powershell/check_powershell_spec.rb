@@ -12,6 +12,8 @@ RSpec.describe Puppet::Provider::CheckPowershell::CheckPowershell do
   let(:posh) { instance_double('Pwsh::Manager') }
   let(:valid_command) { '$PSVersionTable.PSVersion' }
   let(:invalid_command) { 'invalid$PSVersion' }
+  let(:execute_valid_command) { 'try { $PSVersionTable.PSVersion; exit $LASTEXITCODE } catch { write-error $_ ; exit 1 }' }
+  let(:execute_invalid_command) { 'try { invalid$PSVersion; exit $LASTEXITCODE } catch { write-error $_ ; exit 1 }' }
   let(:valid_hash) do
     { name: 'foo', command: valid_command, expected_exitcode: [0], output_matcher: %r{Major}, request_timeout: 30, retries: 1, backoff: 1, exponential_backoff_base: 2, max_backoff: 40, timeout: 60 }
   end
@@ -30,7 +32,7 @@ RSpec.describe Puppet::Provider::CheckPowershell::CheckPowershell do
       allow(Pwsh::Manager).to receive(:powershell_path).and_return('C:\\Windows')
       allow(Pwsh::Manager).to receive(:powershell_args).and_return(['-NoProfile'])
       allow(Pwsh::Manager).to receive(:instance).with(any_args).and_return(posh)
-      allow(posh).to receive(:execute).with(valid_command).and_return({ stdout: 'Major', exitcode: 0 })
+      allow(posh).to receive(:execute).with(execute_valid_command).and_return({ stdout: 'Major', exitcode: 0 })
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
       expect(context).to receive(:debug).with("The return exitcode '0' is matching with the expected_exitcode '[0]'")
       expect(context).to receive(:debug).with("The return output 'Major' is matching with output_matcher '(?-mix:Major)'")
@@ -44,7 +46,7 @@ RSpec.describe Puppet::Provider::CheckPowershell::CheckPowershell do
       allow(Pwsh::Manager).to receive(:powershell_path).and_return('C:\\Windows')
       allow(Pwsh::Manager).to receive(:powershell_args).and_return(['-NoProfile'])
       allow(Pwsh::Manager).to receive(:instance).with(any_args).and_return(posh)
-      allow(posh).to receive(:execute).with(invalid_command).and_return({ stdout: 'Major', exitcode: 3 })
+      allow(posh).to receive(:execute).with(execute_invalid_command).and_return({ stdout: 'Major', exitcode: 3 })
       allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
@@ -60,7 +62,7 @@ RSpec.describe Puppet::Provider::CheckPowershell::CheckPowershell do
       allow(Pwsh::Manager).to receive(:powershell_path).and_return('C:\\Windows')
       allow(Pwsh::Manager).to receive(:powershell_args).and_return(['-NoProfile'])
       allow(Pwsh::Manager).to receive(:instance).with(any_args).and_return(posh)
-      allow(posh).to receive(:execute).with(invalid_command).and_return({ stdout: 'invalid', exitcode: 2 })
+      allow(posh).to receive(:execute).with(execute_invalid_command).and_return({ stdout: 'invalid', exitcode: 2 })
       allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
@@ -80,7 +82,7 @@ RSpec.describe Puppet::Provider::CheckPowershell::CheckPowershell do
       allow(context).to receive(:debug)
       allow(context).to receive(:debug)
       expect(context).to receive(:debug).with('Checking whether foo is up-to-date')
-      allow(posh).to receive(:execute).with(invalid_command).and_raise(StandardError)
+      allow(posh).to receive(:execute).with(execute_invalid_command).and_raise(StandardError)
       expect(context).to receive(:info).with(%r{1 tries})
       expect(context).to receive(:info).with(%r{2 tries})
       expect(context).to receive(:info).with(%r{3 tries})
